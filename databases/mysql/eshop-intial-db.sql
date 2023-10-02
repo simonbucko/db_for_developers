@@ -221,10 +221,17 @@ CREATE TABLE IF NOT EXISTS `eshop`.`payment` (
   `customerId` CHAR(36) NOT NULL,
   `paymentDate` DATE NOT NULL,
   `amount` DECIMAL(10,2) NOT NULL,
+  `orderId` CHAR(36) NOT NULL,
   PRIMARY KEY (`id`),
+  INDEX `fk_payment_order1_idx` (`orderId` ASC) VISIBLE,
   CONSTRAINT `payments_ibfk_1`
     FOREIGN KEY (`customerId`)
-    REFERENCES `eshop`.`customer` (`id`))
+    REFERENCES `eshop`.`customer` (`id`),
+  CONSTRAINT `fk_payment_order1`
+    FOREIGN KEY (`orderId`)
+    REFERENCES `eshop`.`order` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf16;
 
