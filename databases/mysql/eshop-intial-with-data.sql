@@ -177,13 +177,13 @@ CREATE TABLE `order` (
   `shippedDate` date DEFAULT NULL,
   `comments` text,
   `customerId` char(36) NOT NULL,
-  `orderStatusId` int NOT NULL,
-  PRIMARY KEY (`id`,`orderStatusId`),
+  `orderStatusId` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `customerNumber` (`customerId`),
   KEY `fk_order_orderStatus1_idx` (`orderStatusId`),
-  CONSTRAINT `fk_order_orderStatus1` FOREIGN KEY (`orderStatusId`) REFERENCES `orderstatus` (`id`),
-  CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customerId`) REFERENCES `customer` (`id`)
+  CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customerId`) REFERENCES `customer` (`id`),
+  CONSTRAINT `orders_orderstatus` FOREIGN KEY (`orderStatusId`) REFERENCES `orderstatus` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -196,6 +196,30 @@ LOCK TABLES `order` WRITE;
 INSERT INTO `order` VALUES ('c9af565f-6168-11ee-9667-7c1e520063bc','2023-10-02',NULL,NULL,'a0c7e67b-6155-11ee-9667-7c1e520063bc',1);
 /*!40000 ALTER TABLE `order` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`sibu`@`%`*/ /*!50003 TRIGGER `after_ship_date_change_from_null_set_status_shipped` AFTER UPDATE ON `order` FOR EACH ROW BEGIN
+	DECLARE order_id INT;
+    IF NEW.shippedDate IS NOT NULL AND OLD.shippedDate IS NULL THEN
+        SET order_id = NEW.id; 
+        
+        UPDATE eshop.order
+        SET orderStatusId = 1
+        WHERE id = order_id;
+    END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `orderitems`
@@ -309,6 +333,14 @@ LOCK TABLES `product` WRITE;
 INSERT INTO `product` VALUES ('582a7180-6165-11ee-9667-7c1e520063bc','Nike AIR','This are brand new shoes',100,100.34);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping events for database 'eshop'
+--
+
+--
+-- Dumping routines for database 'eshop'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -319,4 +351,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-02 23:24:58
+-- Dump completed on 2023-10-06  9:50:56
