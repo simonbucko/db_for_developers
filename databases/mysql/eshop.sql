@@ -75,6 +75,23 @@ LOCK TABLES `customer` WRITE;
 INSERT INTO `customer` VALUES ('a0c7e67b-6155-11ee-9667-7c1e520063bc','Doe','Joe','12121212','joe@test.sk','858c77c4-6155-11ee-9667-7c1e520063bc');
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`sibu`@`%`*/ /*!50003 TRIGGER `deleteAddressAfterCustomerDeleted` AFTER DELETE ON `customer` FOR EACH ROW BEGIN
+	DELETE FROM eshop.address WHERE id=OLD.addressId;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `employee`
@@ -96,7 +113,7 @@ CREATE TABLE `employee` (
   KEY `fk_employee_address1_idx` (`addressId`),
   KEY `fk_employee_office1_idx` (`officeId`),
   KEY `fk_employee_jobTitle1_idx` (`jobId`),
-  CONSTRAINT `fk_employee_address1` FOREIGN KEY (`addressId`) REFERENCES `address` (`id`),
+  CONSTRAINT `fk_employee_address1` FOREIGN KEY (`addressId`) REFERENCES `address` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_employee_jobTitle1` FOREIGN KEY (`jobId`) REFERENCES `job` (`id`),
   CONSTRAINT `fk_employee_office1` FOREIGN KEY (`officeId`) REFERENCES `office` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16;
@@ -108,9 +125,26 @@ CREATE TABLE `employee` (
 
 LOCK TABLES `employee` WRITE;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
-INSERT INTO `employee` VALUES ('ac6b9a53-6163-11ee-9667-7c1e520063bc','Hanek','Jozef','jozef@test.sk','b194c081-6161-11ee-9667-7c1e520063bc','011c4585-6162-11ee-9667-7c1e520063bc','c223c96b-6154-11ee-9667-7c1e520063bc');
+INSERT INTO `employee` VALUES ('ac6b9a53-6163-11ee-9667-7c1e520063bc','Hanek','Jozef','jozef@test.sk','ed62a27b-615c-11ee-9667-7c1e520063bc','011c4585-6162-11ee-9667-7c1e520063bc','c223c96b-6154-11ee-9667-7c1e520063bc');
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`sibu`@`%`*/ /*!50003 TRIGGER `deleteAddressAfterEmployeeDeleted` AFTER DELETE ON `employee` FOR EACH ROW BEGIN
+	DELETE FROM eshop.address WHERE id=OLD.addressId;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `job`
@@ -163,6 +197,23 @@ LOCK TABLES `office` WRITE;
 INSERT INTO `office` VALUES ('011c4585-6162-11ee-9667-7c1e520063bc','Copenhagen headquaters','b194c081-6161-11ee-9667-7c1e520063bc');
 /*!40000 ALTER TABLE `office` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`sibu`@`%`*/ /*!50003 TRIGGER `deleteAddressAfterOfficeDeleted` AFTER DELETE ON `office` FOR EACH ROW BEGIN
+	DELETE FROM eshop.address WHERE id=OLD.addressId;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `order`
@@ -257,7 +308,7 @@ CREATE TABLE `orderstatus` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `status_UNIQUE` (`status`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf16;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf16;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -370,4 +421,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-07 21:25:38
+-- Dump completed on 2023-10-07 23:58:10
