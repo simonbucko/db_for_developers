@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `address`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `address` (
-  `id` char(36) NOT NULL,
+  `id` char(36) NOT NULL DEFAULT (uuid()),
   `state` varchar(45) NOT NULL,
   `postalCode` varchar(15) NOT NULL,
   `city` varchar(45) NOT NULL,
@@ -53,7 +53,7 @@ DROP TABLE IF EXISTS `customer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `customer` (
-  `id` char(36) NOT NULL,
+  `id` char(36) NOT NULL DEFAULT (uuid()),
   `lastName` varchar(50) NOT NULL,
   `firstName` varchar(50) NOT NULL,
   `phone` varchar(50) NOT NULL,
@@ -84,7 +84,7 @@ DROP TABLE IF EXISTS `employee`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `employee` (
-  `id` char(36) NOT NULL,
+  `id` char(36) NOT NULL DEFAULT (uuid()),
   `lastName` varchar(50) NOT NULL,
   `firstName` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
@@ -120,7 +120,7 @@ DROP TABLE IF EXISTS `job`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `job` (
-  `id` char(36) NOT NULL,
+  `id` char(36) NOT NULL DEFAULT (uuid()),
   `title` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `title_UNIQUE` (`title`)
@@ -145,7 +145,7 @@ DROP TABLE IF EXISTS `office`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `office` (
-  `id` char(36) NOT NULL,
+  `id` char(36) NOT NULL DEFAULT (uuid()),
   `name` varchar(50) NOT NULL,
   `addressId` char(36) NOT NULL,
   PRIMARY KEY (`id`,`addressId`),
@@ -172,7 +172,7 @@ DROP TABLE IF EXISTS `order`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `order` (
-  `id` char(36) NOT NULL,
+  `id` char(36) NOT NULL DEFAULT (uuid()),
   `orderDate` date NOT NULL,
   `shippedDate` date DEFAULT NULL,
   `comments` text,
@@ -193,7 +193,7 @@ CREATE TABLE `order` (
 
 LOCK TABLES `order` WRITE;
 /*!40000 ALTER TABLE `order` DISABLE KEYS */;
-INSERT INTO `order` VALUES ('c9af565f-6168-11ee-9667-7c1e520063bc','2023-10-02',NULL,NULL,'a0c7e67b-6155-11ee-9667-7c1e520063bc',1);
+INSERT INTO `order` VALUES ('9b31a95e-6545-11ee-9667-7c1e520063bc','2023-10-02','2023-10-02',NULL,'a0c7e67b-6155-11ee-9667-7c1e520063bc',1),('c9af565f-6168-11ee-9667-7c1e520063bc','2023-10-02','2023-10-03',NULL,'a0c7e67b-6155-11ee-9667-7c1e520063bc',2);
 /*!40000 ALTER TABLE `order` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -205,14 +205,9 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`sibu`@`%`*/ /*!50003 TRIGGER `after_ship_date_change_from_null_set_status_shipped` AFTER UPDATE ON `order` FOR EACH ROW BEGIN
-	DECLARE order_id INT;
+/*!50003 CREATE*/ /*!50017 DEFINER=`sibu`@`%`*/ /*!50003 TRIGGER `updateOrderStatusWhenOrderShipped` BEFORE UPDATE ON `order` FOR EACH ROW BEGIN
     IF NEW.shippedDate IS NOT NULL AND OLD.shippedDate IS NULL THEN
-        SET order_id = NEW.id; 
-        
-        UPDATE eshop.order
-        SET orderStatusId = 1
-        WHERE id = order_id;
+        SET NEW.orderStatusId = 1;
     END IF;
 END */;;
 DELIMITER ;
@@ -283,7 +278,7 @@ DROP TABLE IF EXISTS `payment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `payment` (
-  `id` char(36) NOT NULL,
+  `id` char(36) NOT NULL DEFAULT (uuid()),
   `customerId` char(36) NOT NULL,
   `paymentDate` date NOT NULL,
   `amount` decimal(10,2) NOT NULL,
@@ -314,7 +309,7 @@ DROP TABLE IF EXISTS `product`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `product` (
-  `id` char(36) NOT NULL,
+  `id` char(36) NOT NULL DEFAULT (uuid()),
   `name` varchar(70) NOT NULL,
   `description` text NOT NULL,
   `quantityInStock` smallint NOT NULL,
@@ -341,6 +336,30 @@ UNLOCK TABLES;
 --
 -- Dumping routines for database 'eshop'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `UpdateOrderStatus` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO' */ ;
+DELIMITER ;;
+CREATE DEFINER=`sibu`@`%` PROCEDURE `UpdateOrderStatus`(
+    IN order_id CHAR(36),
+    IN status_id INT
+)
+BEGIN
+    UPDATE eshop.order
+    SET orderStatusId = status_id
+    WHERE id = order_id;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -351,4 +370,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-06  9:50:56
+-- Dump completed on 2023-10-07 21:25:38
