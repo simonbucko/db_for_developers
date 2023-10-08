@@ -46,6 +46,22 @@ INSERT INTO `address` VALUES ('858c77c4-6155-11ee-9667-7c1e520063bc','Denmark','
 UNLOCK TABLES;
 
 --
+-- Temporary view structure for view `bigcustomerview`
+--
+
+DROP TABLE IF EXISTS `bigcustomerview`;
+/*!50001 DROP VIEW IF EXISTS `bigcustomerview`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `bigcustomerview` AS SELECT 
+ 1 AS `id`,
+ 1 AS `firstName`,
+ 1 AS `lastName`,
+ 1 AS `email`,
+ 1 AS `total purchase amount`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Table structure for table `customer`
 --
 
@@ -267,7 +283,7 @@ CREATE TABLE `order` (
 
 LOCK TABLES `order` WRITE;
 /*!40000 ALTER TABLE `order` DISABLE KEYS */;
-INSERT INTO `order` VALUES ('c9af565f-6168-11ee-9667-7c1e520063bc','2023-10-02','2023-10-03',NULL,'a0c7e67b-6155-11ee-9667-7c1e520063bc',2);
+INSERT INTO `order` VALUES ('32927190-65ef-11ee-9667-7c1e520063bc','2023-10-08',NULL,NULL,'a0c7e67b-6155-11ee-9667-7c1e520063bc',NULL),('3ce4e44d-65f3-11ee-9667-7c1e520063bc','2023-10-08',NULL,NULL,'a0c7e67b-6155-11ee-9667-7c1e520063bc',NULL),('c9af565f-6168-11ee-9667-7c1e520063bc','2023-10-02','2023-10-03',NULL,'a0c7e67b-6155-11ee-9667-7c1e520063bc',2);
 /*!40000 ALTER TABLE `order` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -314,7 +330,7 @@ CREATE TABLE `orderitem` (
 
 LOCK TABLES `orderitem` WRITE;
 /*!40000 ALTER TABLE `orderitem` DISABLE KEYS */;
-INSERT INTO `orderitem` VALUES ('c9af565f-6168-11ee-9667-7c1e520063bc','582a7180-6165-11ee-9667-7c1e520063bc',2);
+INSERT INTO `orderitem` VALUES ('32927190-65ef-11ee-9667-7c1e520063bc','582a7180-6165-11ee-9667-7c1e520063bc',1),('3ce4e44d-65f3-11ee-9667-7c1e520063bc','582a7180-6165-11ee-9667-7c1e520063bc',1),('c9af565f-6168-11ee-9667-7c1e520063bc','582a7180-6165-11ee-9667-7c1e520063bc',2);
 /*!40000 ALTER TABLE `orderitem` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -371,7 +387,7 @@ CREATE TABLE `payment` (
 
 LOCK TABLES `payment` WRITE;
 /*!40000 ALTER TABLE `payment` DISABLE KEYS */;
-INSERT INTO `payment` VALUES ('5837ed50-6169-11ee-9667-7c1e520063bc','a0c7e67b-6155-11ee-9667-7c1e520063bc','2023-10-02',200.68,'c9af565f-6168-11ee-9667-7c1e520063bc');
+INSERT INTO `payment` VALUES ('329288e4-65ef-11ee-9667-7c1e520063bc','a0c7e67b-6155-11ee-9667-7c1e520063bc','2023-10-08',100.34,'32927190-65ef-11ee-9667-7c1e520063bc'),('3ce50400-65f3-11ee-9667-7c1e520063bc','a0c7e67b-6155-11ee-9667-7c1e520063bc','2023-10-08',100.34,'3ce4e44d-65f3-11ee-9667-7c1e520063bc'),('5837ed50-6169-11ee-9667-7c1e520063bc','a0c7e67b-6155-11ee-9667-7c1e520063bc','2023-10-02',200.68,'c9af565f-6168-11ee-9667-7c1e520063bc');
 /*!40000 ALTER TABLE `payment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -399,7 +415,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES ('582a7180-6165-11ee-9667-7c1e520063bc','Nike AIR','This are brand new shoes',0,100.34);
+INSERT INTO `product` VALUES ('582a7180-6165-11ee-9667-7c1e520063bc','Nike AIR','This are brand new shoes',100,100.34);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -480,6 +496,7 @@ BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
         ROLLBACK;
+        RESIGNAL;
     END;
     
     START TRANSACTION;
@@ -508,6 +525,24 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Final view structure for view `bigcustomerview`
+--
+
+/*!50001 DROP VIEW IF EXISTS `bigcustomerview`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`sibu`@`%` SQL SECURITY DEFINER */
+/*!50001 VIEW `bigcustomerview` AS select `c`.`id` AS `id`,`c`.`firstName` AS `firstName`,`c`.`lastName` AS `lastName`,`c`.`email` AS `email`,sum(`p`.`amount`) AS `total purchase amount` from (`customer` `c` join `payment` `p` on((`p`.`customerId` = `c`.`id`))) group by `c`.`id`,`c`.`firstName`,`c`.`lastName`,`c`.`email` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -518,4 +553,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-08 17:12:42
+-- Dump completed on 2023-10-08 18:38:52

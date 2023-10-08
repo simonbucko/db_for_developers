@@ -51,3 +51,9 @@ advantages and disadvantages of using stored procedures
   - it is hard to maintain
   - it is db specific
   - it utilizes more memory and cpu usage
+
+partition
+
+- dividing large dataset into a smaller pieces so it is easier to query the data.
+- vertical paritioning is when we break down the table into a smaller tables
+- horizontal partitioning is when we copy the schema and split the data based on some sharding key and usually is done between multiple servers or nodes
