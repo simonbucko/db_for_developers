@@ -1,5 +1,6 @@
 import _sequelize from "sequelize";
 const DataTypes = _sequelize.DataTypes;
+import { sequalize } from "../connection.js";
 import _address from "./address.js";
 import _customer from "./customer.js";
 import _employee from "./employee.js";
@@ -11,7 +12,7 @@ import _orderstatus from "./orderstatus.js";
 import _payment from "./payment.js";
 import _product from "./product.js";
 
-export default function initModels(sequelize) {
+const initModels = (sequelize) => {
   const address = _address.init(sequelize, DataTypes);
   const customer = _customer.init(sequelize, DataTypes);
   const employee = _employee.init(sequelize, DataTypes);
@@ -40,7 +41,7 @@ export default function initModels(sequelize) {
   employee.belongsTo(address, { as: "address", foreignKey: "addressId" });
   address.hasMany(employee, { as: "employees", foreignKey: "addressId" });
   office.belongsTo(address, { as: "address", foreignKey: "addressId" });
-  address.hasMany(office, { as: "offices", foreignKey: "addressId" });
+  address.hasOne(office, { as: "offices", foreignKey: "addressId" });
   order.belongsTo(customer, { as: "customer", foreignKey: "customerId" });
   customer.hasMany(order, { as: "orders", foreignKey: "customerId" });
   payment.belongsTo(customer, { as: "customer", foreignKey: "customerId" });
@@ -73,4 +74,6 @@ export default function initModels(sequelize) {
     payment,
     product,
   };
-}
+};
+
+export default initModels(sequalize);
