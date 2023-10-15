@@ -8,6 +8,7 @@ const SERVER_PORT = process.env.SERVER_PORT || 8080;
 
 const app = express();
 
+app.use(express.json());
 app.use("/mysql", mysqlRouter);
 
 app.listen(SERVER_PORT, async () => {

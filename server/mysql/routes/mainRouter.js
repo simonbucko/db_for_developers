@@ -1,11 +1,10 @@
 import { Router } from "express";
-import customersRouter from "./customerRouter.js";
+import customerRouter from "./customerRouter.js";
+import addressRouter from "./addressRouter.js";
 
 const router = Router();
 
-router.use("/", customersRouter);
-router.get("/", async (req, res) => {
-  res.status(200).send("Hello");
-});
+router.use("/", customerRouter);
+router.use("/", addressRouter);
 
 export default router;
