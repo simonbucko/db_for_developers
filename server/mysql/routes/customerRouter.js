@@ -41,4 +41,50 @@ router.post("/customers", async (req, res) => {
   });
 });
 
+router.get("/customers/:customerId", async (req, res) => {
+  const customer = await models.customer.findByPk(req.params.customerId);
+
+  res.status(200).json({
+    data: {
+      customer,
+    },
+  });
+});
+
+router.delete("/customers/:customerId", async (req, res) => {
+  const customer = await models.customer.destroy({
+    where: {
+      id: req.params.customerId,
+    },
+  });
+
+  res.status(200).json({
+    data: {
+      customer,
+    },
+  });
+});
+
+router.patch("/customers/:customerId", async (req, res) => {
+  const { firstName, lastName, phone, email } = req.body;
+
+  const savedCustomer = await models.customer.findByPk(req.params.customerId);
+
+  const updatedCustomer = {
+    ...savedCustomer.toJSON(),
+    firstName,
+    lastName,
+    phone,
+    email,
+  };
+
+  const customer = await savedCustomer.update(updatedCustomer);
+
+  res.status(200).json({
+    data: {
+      customer,
+    },
+  });
+});
+
 export default router;
