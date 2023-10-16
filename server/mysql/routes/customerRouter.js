@@ -26,26 +26,13 @@ router.post("/customers", async (req, res) => {
     street,
   });
 
-  const returnedJson = address.toJSON();
-
-  console.log(returnedJson.id);
-
-  await address.destroy();
-
-  //   const customer = await address.createCustomer({
-  //     firstName,
-  //     lastName,
-  //     phone,
-  //     email,
-  //   });
-
-  //   const customer = await models.customer.create({
-  //     firstName,
-  //     lastName,
-  //     phone,
-  //     email,
-  //     addressId: rawAddress.id,
-  //   });
+  const customer = await models.customer.create({
+    firstName,
+    lastName,
+    phone,
+    email,
+    addressId: address.id,
+  });
 
   res.status(200).json({
     data: {

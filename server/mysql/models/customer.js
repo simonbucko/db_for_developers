@@ -1,14 +1,14 @@
 import _sequelize from "sequelize";
-const { Model, Sequelize } = _sequelize;
+const { Model } = _sequelize;
 
 export default class customer extends Model {
   static init(sequelize, DataTypes) {
     return super.init(
       {
         id: {
-          type: DataTypes.CHAR(36),
+          type: DataTypes.UUID,
           allowNull: false,
-          defaultValue: Sequelize.Sequelize.fn("uuid"),
+          defaultValue: DataTypes.UUIDV4,
           primaryKey: true,
         },
         lastName: {
@@ -29,7 +29,7 @@ export default class customer extends Model {
           unique: "email_UNIQUE",
         },
         addressId: {
-          type: DataTypes.CHAR(36),
+          type: DataTypes.UUID,
           allowNull: false,
           references: {
             model: "address",
