@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, raw } from "express";
 import models from "../models/init-models.js";
 
 const router = Router();
@@ -19,20 +19,33 @@ router.post("/customers", async (req, res) => {
   const { firstName, lastName, phone, email, state, postalCode, city, street } =
     req.body;
 
-  const customerAddress = await models.address.createAddress({
+  const address = await models.address.create({
     state,
     postalCode,
     city,
     street,
   });
 
-  const customer = await customerAddress.createCustomer({
-    firstName,
-    lastName,
-    phone,
-    email,
-    addressId: customerAddress.id,
-  });
+  const returnedJson = address.toJSON();
+
+  console.log(returnedJson.id);
+
+  await address.destroy();
+
+  //   const customer = await address.createCustomer({
+  //     firstName,
+  //     lastName,
+  //     phone,
+  //     email,
+  //   });
+
+  //   const customer = await models.customer.create({
+  //     firstName,
+  //     lastName,
+  //     phone,
+  //     email,
+  //     addressId: rawAddress.id,
+  //   });
 
   res.status(200).json({
     data: {

@@ -31,7 +31,6 @@ export default class customer extends Model {
         addressId: {
           type: DataTypes.CHAR(36),
           allowNull: false,
-          primaryKey: true,
           references: {
             model: "address",
             key: "id",
