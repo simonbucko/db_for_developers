@@ -42,7 +42,12 @@ router.post("/customers", async (req, res) => {
 });
 
 router.get("/customers/:customerId", async (req, res) => {
-  const customer = await models.customer.findByPk(req.params.customerId);
+  const customer = await models.customer.findOne({
+    where: {
+      id: req.params.customerId,
+    },
+    include: "address",
+  });
 
   res.status(200).json({
     data: {
@@ -68,10 +73,14 @@ router.delete("/customers/:customerId", async (req, res) => {
 router.patch("/customers/:customerId", async (req, res) => {
   const { firstName, lastName, phone, email } = req.body;
 
-  const savedCustomer = await models.customer.findByPk(req.params.customerId);
+  const savedCustomer = await models.customer.findOne({
+    where: {
+      id: req.params.customerId,
+    },
+  });
 
   const updatedCustomer = {
-    ...savedCustomer.toJSON(),
+    ...savedCustomer,
     firstName,
     lastName,
     phone,
@@ -83,6 +92,43 @@ router.patch("/customers/:customerId", async (req, res) => {
   res.status(200).json({
     data: {
       customer,
+    },
+  });
+});
+
+router.patch("/customers/:customerId/address", async (req, res) => {
+  const { state, postalCode, city, street } = req.body;
+
+  const customer = await models.customer.findOne({
+    where: {
+      id: req.params.customerId,
+    },
+    include: "address",
+    raw: true,
+  });
+
+  const updatedAddress = {
+    ...customer.address,
+    state,
+    postalCode,
+    city,
+    street,
+  };
+
+  await models.address.update(updatedAddress, {
+    where: {
+      id: customer.address.id,
+    },
+  });
+
+  res.status(200).json({
+    data: {
+      customer: {
+        ...customer,
+        address: {
+          ...updatedAddress,
+        },
+      },
     },
   });
 });
