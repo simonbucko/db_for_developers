@@ -1,4 +1,6 @@
-import { Router, raw } from "express";
+import { Router } from "express";
+import { sequalize } from "../connection.js";
+import _sequelize from "sequelize";
 import models from "../models/init-models.js";
 import { NotFoundError } from "../../common/NotFoundError.js";
 
@@ -33,10 +35,28 @@ router.get("/orders", async (req, res, next) => {
 
 router.post("/orders", async (req, res, next) => {
   try {
+    const { customerId, products } = req.body;
+
+    const productIds = products.map((product) => product.id);
+    const productQuantities = products.map((product) => product.quantity);
+    const totalPrice = products
+      .reduce((accumulator, product) => {
+        return accumulator + product.price * product.quantity;
+      }, 0)
+      .toFixed(2);
+
+    await sequalize.query("CALL placeOrder(?, ?, ?, ?)", {
+      replacements: [
+        customerId,
+        productIds.join(","),
+        productQuantities.join(","),
+        totalPrice,
+      ],
+      type: _sequelize.QueryTypes.SELECT,
+    });
+
     res.status(200).json({
-      data: {
-        orders,
-      },
+      data: {},
     });
   } catch (error) {
     next(error);
