@@ -33,7 +33,8 @@ export default class order extends Model {
         },
         orderStatusId: {
           type: DataTypes.INTEGER,
-          allowNull: true,
+          allowNull: false,
+          defaultValue: 1,
           references: {
             model: "orderstatus",
             key: "id",

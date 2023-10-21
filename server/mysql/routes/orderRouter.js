@@ -6,7 +6,20 @@ const router = Router();
 
 router.get("/orders", async (req, res, next) => {
   try {
-    const orders = await models.order.findAll({});
+    const orders = await models.order.findAll({
+      include: [
+        {
+          model: models.orderstatus,
+          as: "orderStatus",
+          attributes: {
+            exclude: ["id"],
+          },
+        },
+      ],
+      attributes: {
+        exclude: ["orderStatusId"],
+      },
+    });
 
     res.status(200).json({
       data: {
@@ -34,7 +47,17 @@ router.get("/orders/:orderId", async (req, res, next) => {
             attributes: ["quantity"],
           },
         },
+        {
+          model: models.orderstatus,
+          as: "orderStatus",
+          attributes: {
+            exclude: ["id"],
+          },
+        },
       ],
+      attributes: {
+        exclude: ["orderStatusId"],
+      },
     });
 
     if (order == null) {
@@ -51,60 +74,59 @@ router.get("/orders/:orderId", async (req, res, next) => {
   }
 });
 
-// router.delete("/products/:productId", async (req, res, next) => {
-//   try {
-//     const product = await models.product.destroy({
-//       where: {
-//         id: req.params.productId,
-//       },
-//     });
+router.post("/orders/:orderId/mark-shipped", async (req, res, next) => {
+  try {
+    const order = await models.order.findOne({
+      where: {
+        id: req.params.orderId,
+      },
+    });
 
-//     if (product == null) {
-//       throw new NotFoundError();
-//     }
+    if (order == null) {
+      throw new NotFoundError();
+    }
 
-//     res.status(200).json({
-//       data: {
-//         product,
-//       },
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// });
+    const currentDate = new Date();
 
-// router.patch("/products/:productId", async (req, res, next) => {
-//   try {
-//     const { name, description, quantityInStock, price } = req.body;
+    await order.update({
+      shippedDate: currentDate,
+    });
 
-//     const savedProduct = await models.product.findOne({
-//       where: {
-//         id: req.params.customerId,
-//       },
-//     });
+    const updatedOrder = await models.order.findOne({
+      where: {
+        id: req.params.orderId,
+      },
+      include: [
+        {
+          model: models.product,
+          as: "products",
+          attributes: { exclude: ["quantityInStock"] },
+          through: {
+            model: models.orderitem,
+            attributes: ["quantity"],
+          },
+        },
+        {
+          model: models.orderstatus,
+          as: "orderStatus",
+          attributes: {
+            exclude: ["id"],
+          },
+        },
+      ],
+      attributes: {
+        exclude: ["orderStatusId"],
+      },
+    });
 
-//     if (product == null) {
-//       throw new NotFoundError();
-//     }
-
-//     const updatedProduct = {
-//       ...savedProduct,
-//       name,
-//       description,
-//       quantityInStock,
-//       price,
-//     };
-
-//     const product = await savedProduct.update(updatedProduct);
-
-//     res.status(200).json({
-//       data: {
-//         product,
-//       },
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// });
+    res.status(200).json({
+      data: {
+        order: updatedOrder,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
 
 export default router;
