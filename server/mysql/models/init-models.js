@@ -25,13 +25,13 @@ const initModels = (sequelize) => {
   const product = _product.init(sequelize, DataTypes);
 
   order.belongsToMany(product, {
-    as: "productId_products",
+    as: "products",
     through: orderitem,
     foreignKey: "orderId",
     otherKey: "productId",
   });
   product.belongsToMany(order, {
-    as: "orderId_orders",
+    as: "orders",
     through: orderitem,
     foreignKey: "productId",
     otherKey: "orderId",
@@ -53,7 +53,7 @@ const initModels = (sequelize) => {
   orderitem.belongsTo(order, { as: "order", foreignKey: "orderId" });
   order.hasMany(orderitem, { as: "orderitems", foreignKey: "orderId" });
   payment.belongsTo(order, { as: "order", foreignKey: "orderId" });
-  order.hasMany(payment, { as: "payments", foreignKey: "orderId" });
+  order.hasOne(payment, { as: "payments", foreignKey: "orderId" });
   order.belongsTo(orderstatus, {
     as: "orderStatus",
     foreignKey: "orderStatusId",
