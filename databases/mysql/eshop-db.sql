@@ -41,7 +41,7 @@ CREATE TABLE `address` (
 
 LOCK TABLES `address` WRITE;
 /*!40000 ALTER TABLE `address` DISABLE KEYS */;
-INSERT INTO `address` VALUES ('858c77c4-6155-11ee-9667-7c1e520063bc','Denmark','2323','Copenhagen','Street 1a'),('b194c081-6161-11ee-9667-7c1e520063bc','Denmark','2325','Copenhagen','Street 3a'),('ed62a27b-615c-11ee-9667-7c1e520063bc','Denmark','2325','Copenhagen','Street 2a');
+INSERT INTO `address` VALUES ('6acbd0e8-70bd-4804-8ab5-194cc6b11942','Slovakia','3434','Kosice','Busy 62'),('858c77c4-6155-11ee-9667-7c1e520063bc','Denmark','2323','Copenhagen','Street 1a'),('b194c081-6161-11ee-9667-7c1e520063bc','Denmark','2325','Copenhagen','Street 3a'),('ed62a27b-615c-11ee-9667-7c1e520063bc','Denmark','2325','Copenhagen','Street 2a');
 /*!40000 ALTER TABLE `address` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -75,7 +75,7 @@ CREATE TABLE `customer` (
   `phone` varchar(50) NOT NULL,
   `email` varchar(100) NOT NULL,
   `addressId` char(36) NOT NULL,
-  PRIMARY KEY (`id`,`addressId`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY `email_UNIQUE` (`email`),
   KEY `fk_customer_address1_idx` (`addressId`),
   CONSTRAINT `fk_customer_address1` FOREIGN KEY (`addressId`) REFERENCES `address` (`id`)
@@ -88,7 +88,7 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` VALUES ('a0c7e67b-6155-11ee-9667-7c1e520063bc','Doe','Joe','12121212','joe@test.sk','858c77c4-6155-11ee-9667-7c1e520063bc');
+INSERT INTO `customer` VALUES ('98fdbb5d-2fee-443d-8de9-7ac4f285873f','Test','Simon','23232323','simon@test.sk','6acbd0e8-70bd-4804-8ab5-194cc6b11942'),('a0c7e67b-6155-11ee-9667-7c1e520063bc','Doe','Joe','12121212','joe@test.sk','858c77c4-6155-11ee-9667-7c1e520063bc');
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -124,7 +124,7 @@ CREATE TABLE `employee` (
   `addressId` char(36) NOT NULL,
   `officeId` char(36) NOT NULL,
   `jobId` char(36) NOT NULL,
-  PRIMARY KEY (`id`,`addressId`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY `email_UNIQUE` (`email`),
   KEY `fk_employee_address1_idx` (`addressId`),
   KEY `fk_employee_office1_idx` (`officeId`),
@@ -183,7 +183,7 @@ CREATE TABLE `job` (
 
 LOCK TABLES `job` WRITE;
 /*!40000 ALTER TABLE `job` DISABLE KEYS */;
-INSERT INTO `job` VALUES ('c223c96b-6154-11ee-9667-7c1e520063bc','Sales');
+INSERT INTO `job` VALUES ('fac14bf1-6f30-11ee-9667-7c1e520063bc','Development'),('faa20ab1-6f30-11ee-9667-7c1e520063bc','Marketing'),('c223c96b-6154-11ee-9667-7c1e520063bc','Sales');
 /*!40000 ALTER TABLE `job` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -221,7 +221,7 @@ CREATE TABLE `office` (
   `id` char(36) NOT NULL DEFAULT (uuid()),
   `name` varchar(50) NOT NULL,
   `addressId` char(36) NOT NULL,
-  PRIMARY KEY (`id`,`addressId`),
+  PRIMARY KEY (`id`),
   KEY `fk_office_address1_idx` (`addressId`),
   CONSTRAINT `fk_office_address1` FOREIGN KEY (`addressId`) REFERENCES `address` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16;
@@ -375,7 +375,7 @@ CREATE TABLE `payment` (
   `orderId` char(36) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_payment_order1_idx` (`orderId`),
-  KEY `payments_ibfk_1` (`customerId`),
+  KEY `payments_ibfk_1` (`customerId`) USING BTREE,
   CONSTRAINT `fk_payment_order1` FOREIGN KEY (`orderId`) REFERENCES `order` (`id`),
   CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`customerId`) REFERENCES `customer` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16;
@@ -415,7 +415,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES ('582a7180-6165-11ee-9667-7c1e520063bc','Nike AIR','This are brand new shoes',100,100.34);
+INSERT INTO `product` VALUES ('5472c2ab-8cc1-4047-a316-dccab0ef2319','Helicopter','Best apache ever',50,159.99),('582a7180-6165-11ee-9667-7c1e520063bc','Nike AIR','This are brand new shoes',100,100.34);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -539,7 +539,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`sibu`@`%` SQL SECURITY DEFINER */
-/*!50001 VIEW `bigcustomerview` AS select `c`.`id` AS `id`,`c`.`firstName` AS `firstName`,`c`.`lastName` AS `lastName`,`c`.`email` AS `email`,sum(`p`.`amount`) AS `total purchase amount` from (`customer` `c` join `payment` `p` on((`p`.`customerId` = `c`.`id`))) group by `c`.`id`,`c`.`firstName`,`c`.`lastName`,`c`.`email` */;
+/*!50001 VIEW `bigcustomerview` AS select `c`.`id` AS `id`,`c`.`firstName` AS `firstName`,`c`.`lastName` AS `lastName`,`c`.`email` AS `email`,sum(`p`.`amount`) AS `total purchase amount` from (`customer` `c` join `payment` `p` on((`p`.`customerId` = `c`.`id`))) group by `c`.`id`,`c`.`firstName`,`c`.`lastName`,`c`.`email` order by `total purchase amount` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -553,4 +553,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-08 18:38:52
+-- Dump completed on 2023-10-21 12:55:25
