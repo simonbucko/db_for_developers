@@ -31,6 +31,18 @@ router.get("/orders", async (req, res, next) => {
   }
 });
 
+router.post("/orders", async (req, res, next) => {
+  try {
+    res.status(200).json({
+      data: {
+        orders,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get("/orders/:orderId", async (req, res, next) => {
   try {
     const order = await models.order.findOne({
