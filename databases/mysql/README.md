@@ -57,3 +57,12 @@ partition
 - dividing large dataset into a smaller pieces so it is easier to query the data.
 - vertical paritioning is when we break down the table into a smaller tables
 - horizontal partitioning is when we copy the schema and split the data based on some sharding key and usually is done between multiple servers or nodes
+
+normalization forms
+
+- 1NF
+  - all values must be atomic and have a unique identifier
+- 2NF
+  - there can not be any partial dependency, which means that all non key columns must fully depend (describe) what the primary key is describing
+- 3NF
+  - there can not be any transiive dependency, which means that all not key columns does not depend on other not key columns. You can also say that one column can not be GUESSED from the other column
