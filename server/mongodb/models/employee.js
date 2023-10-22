@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-const customerSchema = new Schema({
+const employeeSchema = new Schema({
   firstName: {
     type: String,
     trim: true,
@@ -55,18 +55,50 @@ const customerSchema = new Schema({
     },
     required: true,
   },
-  payments: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Payment",
+  job: {
+    type: {
+      title: {
+        type: String,
+        trim: true,
+        required: true,
+        minlength: 3,
+      },
     },
-  ],
-  orders: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Order",
+  },
+  office: {
+    type: {
+      name: {
+        type: String,
+        trim: true,
+        required: true,
+        minlength: 3,
+      },
+      state: {
+        type: String,
+        trim: true,
+        required: true,
+        minlength: 3,
+      },
+      postalCode: {
+        type: String,
+        trim: true,
+        required: true,
+        minlength: 3,
+      },
+      city: {
+        type: String,
+        trim: true,
+        required: true,
+        minlength: 3,
+      },
+      street: {
+        type: String,
+        trim: true,
+        required: true,
+        minlength: 3,
+      },
     },
-  ],
+  },
 });
 
-export default mongoose.model("Customer", customerSchema);
+export default mongoose.model("Employee", employeeSchema);
