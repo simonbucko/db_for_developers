@@ -16,4 +16,53 @@ router.get("/products", async (req, res, next) => {
   }
 });
 
+router.post("/products", async (req, res, next) => {
+  try {
+    const { name, description, quantityInStock, price } = req.body;
+
+    const product = await Product.create({
+      name,
+      description,
+      quantityInStock,
+      price,
+    });
+
+    res.status(200).json({
+      data: {
+        product,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/products/:productId", async (req, res, next) => {
+  try {
+    const product = await Product.findById(req.params.productId);
+
+    res.status(200).json({
+      data: {
+        product,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.delete("/products/:productId", async (req, res, next) => {
+  try {
+    const product = await Product.findByIdAndDelete(req.params.productId);
+
+    res.status(200).json({
+      data: {
+        product,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;

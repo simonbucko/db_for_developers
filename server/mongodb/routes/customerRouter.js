@@ -56,10 +56,6 @@ router.get("/customers/:customerId", async (req, res, next) => {
   try {
     const customer = await Customer.findById(req.params.customerId);
 
-    if (customer == null) {
-      throw new NotFoundError();
-    }
-
     res.status(200).json({
       data: {
         customer,
