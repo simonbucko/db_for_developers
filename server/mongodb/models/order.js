@@ -42,11 +42,7 @@ const orderSchema = new Schema({
     trim: true,
     required: true,
     minlength: 3,
-  },
-  paymentId: {
-    type: Schema.Types.ObjectId,
-    ref: "Payment",
-    required: true,
+    default: "Processing",
   },
   customerId: {
     type: Schema.Types.ObjectId,
