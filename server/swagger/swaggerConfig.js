@@ -3,6 +3,8 @@ import {
   MongodbProductInput,
   MongodbOrder,
   MongodbOrderInput,
+  MongodbCustomer,
+  MongodbCustomerInput,
 } from "./schemas/index.js";
 
 const swaggerDefinition = {
@@ -22,6 +24,8 @@ const swaggerDefinition = {
       MongodbProductInput,
       MongodbOrder,
       MongodbOrderInput,
+      MongodbCustomer,
+      MongodbCustomerInput,
     },
   },
 };

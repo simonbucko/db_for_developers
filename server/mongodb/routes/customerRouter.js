@@ -3,6 +3,31 @@ import Customer from "../models/customer.js";
 
 const router = Router();
 
+/**
+ * @swagger
+ * /mongodb/customers:
+ *   get:
+ *     tags:
+ *       [Mongodb - Customers]
+ *     summary: Get a customers list
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     customers:
+ *                      type: array
+ *                      items:
+ *                        $ref: '#/components/schemas/MongodbCustomer'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.get("/customers", async (req, res, next) => {
   try {
     const customers = await Customer.find({});
@@ -16,6 +41,35 @@ router.get("/customers", async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /mongodb/customers:
+ *   post:
+ *     tags:
+ *       [Mongodb - Customers]
+ *     summary: Create a customer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/MongodbCustomerInput'
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     customer:
+ *                       $ref: '#/components/schemas/MongodbCustomer'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.post("/customers", async (req, res, next) => {
   try {
     const {
@@ -52,6 +106,38 @@ router.post("/customers", async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /mongodb/customers/{customerId}:
+ *   get:
+ *     tags:
+ *       [Mongodb - Customers]
+ *     summary: Get a customer by ID
+ *     parameters:
+ *       - name: customerId
+ *         in: path
+ *         description: ID of the customer to get
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     customer:
+ *                       $ref: '#/components/schemas/MongodbCustomer'
+ *       '404':
+ *         $ref: '#/components/responses/NotFound'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.get("/customers/:customerId", async (req, res, next) => {
   try {
     const customer = await Customer.findById(req.params.customerId);
@@ -66,6 +152,38 @@ router.get("/customers/:customerId", async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /mongodb/customers/{customerId}:
+ *   delete:
+ *     tags:
+ *       [Mongodb - Customers]
+ *     summary: Delete a customer by ID
+ *     parameters:
+ *       - name: customerId
+ *         in: path
+ *         description: ID of the customer to delete
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     customer:
+ *                       $ref: '#/components/schemas/MongodbCustomer'
+ *       '404':
+ *         $ref: '#/components/responses/NotFound'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.delete("/customers/:customerId", async (req, res, next) => {
   try {
     const customer = await Customer.findByIdAndDelete(req.params.customerId);
@@ -80,6 +198,44 @@ router.delete("/customers/:customerId", async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /mongodb/customers/{customerId}:
+ *   patch:
+ *     tags:
+ *       [Mongodb - Customers]
+ *     summary: Create a customer
+ *     parameters:
+ *       - name: customerId
+ *         in: path
+ *         description: ID of the customer to udpate
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/MongodbCustomerInput'
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     customer:
+ *                       $ref: '#/components/schemas/MongodbCustomer'
+ *       '404':
+ *         $ref: '#/components/responses/NotFound'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.patch("/customers/:customerId", async (req, res, next) => {
   try {
     const {
