@@ -1,4 +1,9 @@
-import { MongodbProduct, MongodbProductInput } from "./schemas/index.js";
+import {
+  MongodbProduct,
+  MongodbProductInput,
+  MongodbOrder,
+  MongodbOrderInput,
+} from "./schemas/index.js";
 
 const swaggerDefinition = {
   openapi: "3.0.0",
@@ -15,6 +20,8 @@ const swaggerDefinition = {
     schemas: {
       MongodbProduct,
       MongodbProductInput,
+      MongodbOrder,
+      MongodbOrderInput,
     },
   },
 };

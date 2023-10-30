@@ -7,6 +7,31 @@ import mongoose from "mongoose";
 
 const router = Router();
 
+/**
+ * @swagger
+ * /mongodb/orders:
+ *   get:
+ *     tags:
+ *       [Mongodb - Orders]
+ *     summary: Get a orders list
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     orders:
+ *                      type: array
+ *                      items:
+ *                        $ref: '#/components/schemas/MongodbOrder'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.get("/orders", async (req, res, next) => {
   try {
     const orders = await Order.find({});
@@ -20,6 +45,37 @@ router.get("/orders", async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /mongodb/orders:
+ *   post:
+ *     tags:
+ *       [Mongodb - Orders]
+ *     summary: Create an order
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/MongodbOrderInput'
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     orders:
+ *                      type: array
+ *                      items:
+ *                        $ref: '#/components/schemas/MongodbOrder'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.post("/orders", async (req, res, next) => {
   try {
     const { customerId, products } = req.body;
@@ -68,9 +124,41 @@ router.post("/orders", async (req, res, next) => {
   }
 });
 
-router.get("/orders/:productId", async (req, res, next) => {
+/**
+ * @swagger
+ * /mongodb/orders/{orderId}:
+ *   get:
+ *     tags:
+ *       [Mongodb - Orders]
+ *     summary: Get an order
+ *     parameters:
+ *       - name: orderId
+ *         in: path
+ *         description: ID of the order to get
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     product:
+ *                       $ref: '#/components/schemas/MongodbOrder'
+ *       '404':
+ *         $ref: '#/components/responses/NotFound'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
+router.get("/orders/:orderId", async (req, res, next) => {
   try {
-    const order = await Order.findById(req.params.productId);
+    const order = await Order.findById(req.params.orderId);
 
     res.status(200).json({
       data: {
