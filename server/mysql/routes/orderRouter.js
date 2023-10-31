@@ -6,6 +6,31 @@ import { NotFoundError } from "../../common/NotFoundError.js";
 
 const router = Router();
 
+/**
+ * @swagger
+ * /mysql/orders:
+ *   get:
+ *     tags:
+ *       [Mysql - Orders]
+ *     summary: Get a orders list
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     orders:
+ *                      type: array
+ *                      items:
+ *                        $ref: '#/components/schemas/MysqlOrder'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.get("/orders", async (req, res, next) => {
   try {
     const orders = await models.order.findAll({
@@ -33,6 +58,35 @@ router.get("/orders", async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /mysql/orders:
+ *   post:
+ *     tags:
+ *       [Mysql - Orders]
+ *     summary: Create an order
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/MysqlOrderInput'
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     order:
+ *                        $ref: '#/components/schemas/MysqlOrder'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.post("/orders", async (req, res, next) => {
   try {
     const { customerId, products } = req.body;
@@ -63,6 +117,38 @@ router.post("/orders", async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /mysql/orders/{orderId}:
+ *   get:
+ *     tags:
+ *       [Mysql - Orders]
+ *     summary: Get an order by ID
+ *     parameters:
+ *       - name: orderId
+ *         in: path
+ *         description: ID of the order to get
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     order:
+ *                        $ref: '#/components/schemas/MysqlOrder'
+ *       '404':
+ *         $ref: '#/components/responses/NotFound'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.get("/orders/:orderId", async (req, res, next) => {
   try {
     const order = await models.order.findOne({
@@ -106,6 +192,38 @@ router.get("/orders/:orderId", async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /mysql/orders/{orderId}/mark-shipped:
+ *   post:
+ *     tags:
+ *       [Mysql - Orders]
+ *     summary: Mark an order as shipped by ID
+ *     parameters:
+ *       - name: orderId
+ *         in: path
+ *         description: ID of the order to mark as shipped
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     order:
+ *                        $ref: '#/components/schemas/MysqlOrder'
+ *       '404':
+ *         $ref: '#/components/responses/NotFound'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.post("/orders/:orderId/mark-shipped", async (req, res, next) => {
   try {
     const order = await models.order.findOne({

@@ -69,9 +69,7 @@ router.get("/customers", async (req, res, next) => {
  *                 data:
  *                   type: object
  *                   properties:
- *                     customers:
- *                      type: array
- *                      items:
+ *                     customer:
  *                        $ref: '#/components/schemas/MysqlCustomer'
  *       '500':
  *         $ref: '#/components/responses/InternalServerError'
