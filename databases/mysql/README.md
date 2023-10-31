@@ -1,8 +1,12 @@
 https://console.aiven.io/account/a46e0aa9c34d/project/bucino-43d7/services/mysql-sibu/overview
 
+- nahrada pre mysql
+
 mysql -h mysql-sibu.mysql.database.azure.com -u sibu -p
 
-heslo je skratena verzia s velkymi pismenami a ziadnym special znakom medzi cislom
+- heslo je skratena verzia s velkymi pismenami a ziadnym special znakom medzi cislom
+
+use `show grants;` to display what grants a user has
 
 transactions
 
