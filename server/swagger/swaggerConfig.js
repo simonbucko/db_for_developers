@@ -5,6 +5,10 @@ import {
   MongodbOrderInput,
   MongodbCustomer,
   MongodbCustomerInput,
+  MysqlCustomer,
+  MysqlCustomerInput,
+  MysqlCustomerUpdate,
+  MysqlCustomerAddressUpdate,
 } from "./schemas/index.js";
 
 const swaggerDefinition = {
@@ -26,6 +30,10 @@ const swaggerDefinition = {
       MongodbOrderInput,
       MongodbCustomer,
       MongodbCustomerInput,
+      MysqlCustomer,
+      MysqlCustomerInput,
+      MysqlCustomerUpdate,
+      MysqlCustomerAddressUpdate,
     },
   },
 };
