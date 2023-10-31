@@ -41,7 +41,7 @@ CREATE TABLE `address` (
 
 LOCK TABLES `address` WRITE;
 /*!40000 ALTER TABLE `address` DISABLE KEYS */;
-INSERT INTO `address` VALUES ('6acbd0e8-70bd-4804-8ab5-194cc6b11942','Slovakia','3434','Kosice','Busy 62'),('858c77c4-6155-11ee-9667-7c1e520063bc','Denmark','2323','Copenhagen','Street 1a'),('b194c081-6161-11ee-9667-7c1e520063bc','Denmark','2325','Copenhagen','Street 3a'),('ed62a27b-615c-11ee-9667-7c1e520063bc','Denmark','2325','Copenhagen','Street 2a');
+INSERT INTO `address` VALUES ('5c0573b7-5109-490a-9117-c41fe81aa7b7','Slovakia','3434','Kosice','Busy 5'),('6acbd0e8-70bd-4804-8ab5-194cc6b11942','Slovakia','3434','Kosice','Busy 62'),('858c77c4-6155-11ee-9667-7c1e520063bc','Denmark','2323','Copenhagen','Street 1a'),('b194c081-6161-11ee-9667-7c1e520063bc','Denmark','2325','Copenhagen','Street 3a'),('ed62a27b-615c-11ee-9667-7c1e520063bc','Denmark','2325','Copenhagen','Street 2a');
 /*!40000 ALTER TABLE `address` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -88,7 +88,7 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` VALUES ('98fdbb5d-2fee-443d-8de9-7ac4f285873f','Test','Simon','23232323','simon@test.sk','6acbd0e8-70bd-4804-8ab5-194cc6b11942'),('a0c7e67b-6155-11ee-9667-7c1e520063bc','Doe','Joe','12121212','joe@test.sk','858c77c4-6155-11ee-9667-7c1e520063bc');
+INSERT INTO `customer` VALUES ('67bee1c2-13fd-4a45-9b4c-d4cefc01ae57','Dan','Zubar','23232323','zubar@test.sk','5c0573b7-5109-490a-9117-c41fe81aa7b7'),('98fdbb5d-2fee-443d-8de9-7ac4f285873f','Test','Simon','23232323','simon@test.sk','6acbd0e8-70bd-4804-8ab5-194cc6b11942'),('a0c7e67b-6155-11ee-9667-7c1e520063bc','Doe','Joe','12121212','joe@test.sk','858c77c4-6155-11ee-9667-7c1e520063bc');
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -415,7 +415,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES ('5472c2ab-8cc1-4047-a316-dccab0ef2319','Helicopter','Best apache ever',47,159.99),('582a7180-6165-11ee-9667-7c1e520063bc','Nike AIR','This are brand new shoes',96,100.34);
+INSERT INTO `product` VALUES ('5472c2ab-8cc1-4047-a316-dccab0ef2319','Helicoptera','Best apache ever',50,159.99),('582a7180-6165-11ee-9667-7c1e520063bc','Nike AIR','This are brand new shoes',96,100.34);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -553,4 +553,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-24 20:21:20
+-- Dump completed on 2023-10-31 20:03:13
