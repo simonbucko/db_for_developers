@@ -1,11 +1,5 @@
 https://console.aiven.io/account/a46e0aa9c34d/project/bucino-43d7/services/mysql-sibu/overview
 
-- Service URI: mysql://avnadmin:[pass]@mysql-sibu-bucino-43d7.a.aivencloud.com:25753/defaultdb?ssl-mode=REQUIRED
-- DB name: defaultdb
-- Host: mysql-sibu-bucino-43d7.a.aivencloud.com
-- Port: 25753
-- SSL mode: reuiqred
-
 mysql -h mysql-sibu.mysql.database.azure.com -u sibu -p
 
 heslo je skratena verzia s velkymi pismenami a ziadnym special znakom medzi cislom

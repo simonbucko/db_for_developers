@@ -1,9 +1,34 @@
-import { Router, raw } from "express";
+import { Router } from "express";
 import models from "../models/init-models.js";
 import { NotFoundError } from "../../common/NotFoundError.js";
 
 const router = Router();
 
+/**
+ * @swagger
+ * /mysql/products:
+ *   get:
+ *     tags:
+ *       [Mysql - Products]
+ *     summary: Get a products list
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     products:
+ *                      type: array
+ *                      items:
+ *                        $ref: '#/components/schemas/MysqlProduct'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.get("/products", async (req, res, next) => {
   try {
     const products = await models.product.findAll();
@@ -18,6 +43,35 @@ router.get("/products", async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /mysql/products:
+ *   post:
+ *     tags:
+ *       [Mysql - Products]
+ *     summary: Create a products
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/MysqlProductInput'
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     product:
+ *                        $ref: '#/components/schemas/MysqlProduct'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.post("/products", async (req, res, next) => {
   try {
     const { name, description, quantityInStock, price } = req.body;
@@ -39,6 +93,38 @@ router.post("/products", async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /mysql/products/{productId}:
+ *   get:
+ *     tags:
+ *       [Mysql - Products]
+ *     summary: Get a product by ID
+ *     parameters:
+ *       - name: productId
+ *         in: path
+ *         description: ID of the product to get
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     product:
+ *                        $ref: '#/components/schemas/MysqlProduct'
+ *       '404':
+ *         $ref: '#/components/responses/NotFound'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.get("/products/:productId", async (req, res, next) => {
   try {
     const product = await models.product.findOne({
@@ -61,6 +147,38 @@ router.get("/products/:productId", async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /mysql/products/{productId}:
+ *   delete:
+ *     tags:
+ *       [Mysql - Products]
+ *     summary: Delete a product by ID
+ *     parameters:
+ *       - name: productId
+ *         in: path
+ *         description: ID of the product to delete
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     product:
+ *                        $ref: '#/components/schemas/MysqlProduct'
+ *       '404':
+ *         $ref: '#/components/responses/NotFound'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.delete("/products/:productId", async (req, res, next) => {
   try {
     const product = await models.product.destroy({
@@ -83,17 +201,55 @@ router.delete("/products/:productId", async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /mysql/products/{productId}:
+ *   patch:
+ *     tags:
+ *       [Mysql - Products]
+ *     summary: Update a product by ID
+ *     parameters:
+ *       - name: productId
+ *         in: path
+ *         description: ID of the product to update
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/MysqlProductInput'
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     product:
+ *                        $ref: '#/components/schemas/MysqlProduct'
+ *       '404':
+ *         $ref: '#/components/responses/NotFound'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.patch("/products/:productId", async (req, res, next) => {
   try {
     const { name, description, quantityInStock, price } = req.body;
 
     const savedProduct = await models.product.findOne({
       where: {
-        id: req.params.customerId,
+        id: req.params.productId,
       },
     });
 
-    if (product == null) {
+    if (savedProduct == null) {
       throw new NotFoundError();
     }
 

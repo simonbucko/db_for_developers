@@ -12,6 +12,8 @@ import {
   MysqlCustomerInput,
   MysqlCustomerUpdate,
   MysqlCustomerAddressUpdate,
+  MysqlProduct,
+  MysqlProductInput,
 } from "./schemas/index.js";
 
 const swaggerDefinition = {
@@ -37,6 +39,8 @@ const swaggerDefinition = {
       MysqlCustomer,
       MysqlOrder,
       MysqlOrderInput,
+      MysqlProduct,
+      MysqlProductInput,
       MysqlCustomerInput,
       MysqlCustomerUpdate,
       MysqlCustomerAddressUpdate,
