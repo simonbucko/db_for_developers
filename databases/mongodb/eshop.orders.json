@@ -1,0 +1,111 @@
+[{
+  "_id": {
+    "$oid": "65380299e09bdf1b8dee2f3e"
+  },
+  "orderDate": {
+    "$date": "2023-10-24T17:44:56.239Z"
+  },
+  "products": [
+    {
+      "id": {
+        "$oid": "6537f69cd0b92ddcb369cf83"
+      },
+      "name": "Helicopter",
+      "quantity": 3,
+      "price": 159.99,
+      "_id": {
+        "$oid": "65380299e09bdf1b8dee2f3f"
+      }
+    },
+    {
+      "id": {
+        "$oid": "6538013dec51f60ed0b4322b"
+      },
+      "name": "Cupcake",
+      "quantity": 2,
+      "price": 9.99,
+      "_id": {
+        "$oid": "65380299e09bdf1b8dee2f40"
+      }
+    }
+  ],
+  "orderStatus": "Processing",
+  "customerId": {
+    "$oid": "65355aa1cadff8af80ac7de5"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "653803a25689bc1cc971a29a"
+  },
+  "orderDate": {
+    "$date": "2023-10-24T17:49:22.006Z"
+  },
+  "products": [
+    {
+      "id": {
+        "$oid": "6537f69cd0b92ddcb369cf83"
+      },
+      "name": "Helicopter",
+      "quantity": 1,
+      "price": 159.99,
+      "_id": {
+        "$oid": "653803a25689bc1cc971a29b"
+      }
+    },
+    {
+      "id": {
+        "$oid": "6538013dec51f60ed0b4322b"
+      },
+      "name": "Cupcake",
+      "quantity": 2,
+      "price": 9.99,
+      "_id": {
+        "$oid": "653803a25689bc1cc971a29c"
+      }
+    }
+  ],
+  "orderStatus": "Processing",
+  "customerId": {
+    "$oid": "653803815689bc1cc971a297"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "653809ccdfb20b9bfbf2ceeb"
+  },
+  "orderDate": {
+    "$date": "2023-10-24T18:15:40.929Z"
+  },
+  "products": [
+    {
+      "id": {
+        "$oid": "6537f69cd0b92ddcb369cf83"
+      },
+      "name": "Helicopter",
+      "quantity": 2,
+      "price": 159.99,
+      "_id": {
+        "$oid": "653809ccdfb20b9bfbf2ceec"
+      }
+    },
+    {
+      "id": {
+        "$oid": "6538013dec51f60ed0b4322b"
+      },
+      "name": "Cupcake",
+      "quantity": 1,
+      "price": 9.99,
+      "_id": {
+        "$oid": "653809ccdfb20b9bfbf2ceed"
+      }
+    }
+  ],
+  "orderStatus": "Processing",
+  "customerId": {
+    "$oid": "653803815689bc1cc971a297"
+  },
+  "__v": 0
+}]

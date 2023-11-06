@@ -1,0 +1,20 @@
+[{
+  "_id": {
+    "$oid": "6537f69cd0b92ddcb369cf83"
+  },
+  "name": "Helicopter",
+  "description": "Best apache ever",
+  "price": 159.99,
+  "quantityInStock": 47,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6538013dec51f60ed0b4322b"
+  },
+  "name": "Cupcake",
+  "description": "nom nom",
+  "price": 9.99,
+  "quantityInStock": 97,
+  "__v": 0
+}]

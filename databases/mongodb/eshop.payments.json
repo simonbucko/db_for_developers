@@ -1,0 +1,39 @@
+[{
+  "_id": {
+    "$oid": "653802a1e09bdf1b8dee2f42"
+  },
+  "paymentDate": {
+    "$date": "2023-10-24T17:44:56.239Z"
+  },
+  "amount": 499.95,
+  "orderId": {
+    "$oid": "65380299e09bdf1b8dee2f3e"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "653803a25689bc1cc971a29e"
+  },
+  "paymentDate": {
+    "$date": "2023-10-24T17:49:22.006Z"
+  },
+  "amount": 179.97,
+  "orderId": {
+    "$oid": "653803a25689bc1cc971a29a"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "653809cddfb20b9bfbf2cef1"
+  },
+  "paymentDate": {
+    "$date": "2023-10-24T18:15:40.929Z"
+  },
+  "amount": 329.97,
+  "orderId": {
+    "$oid": "653809ccdfb20b9bfbf2ceeb"
+  },
+  "__v": 0
+}]
