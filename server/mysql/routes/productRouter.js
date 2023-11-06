@@ -12,6 +12,27 @@ const router = Router();
  *     tags:
  *       [Mysql - Products]
  *     summary: Get a products list
+ *     parameters:
+ *       - in: query
+ *         name: name
+ *         schema:
+ *           type: string
+ *         description: The name to filter by
+ *       - in: query
+ *         name: order
+ *         schema:
+ *           type: string
+ *         description: The field and direction to order by (format: field:direction)
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         description: The number of records to return
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *         description: The page number. Page size is specified in the limit parameter and page count starts from 1
  *     responses:
  *       '200':
  *         description: OK
