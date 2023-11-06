@@ -10,6 +10,27 @@ const router = Router();
  *     tags:
  *       [Mongodb - Products]
  *     summary: Get a products list
+ *     parameters:
+ *       - in: query
+ *         name: name
+ *         schema:
+ *           type: string
+ *         description: The name to filter by
+ *       - in: query
+ *         name: order
+ *         schema:
+ *           type: string
+ *         description: "The field and direction to order by (format: field\\:direction)"
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         description: The number of records to return
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *         description: The page number. Page size is specified in the limit parameter and page count starts from 1
  *     responses:
  *       '200':
  *         description: OK
@@ -30,7 +51,22 @@ const router = Router();
  */
 router.get("/products", async (req, res, next) => {
   try {
-    const products = await Product.find({});
+    const { name, order, limit, page } = req.query;
+
+    let sortOrder = {};
+    if (order) {
+      const orderParams = order.split(":");
+      sortOrder[orderParams[0]] =
+        orderParams[1].toLowerCase() === "desc" ? -1 : 1;
+    }
+
+    const query = name ? { name: new RegExp(name, "i") } : {};
+
+    const products = await Product.find(query)
+      .sort(sortOrder)
+      .limit(limit ? parseInt(limit) : undefined)
+      .skip(page && limit ? (parseInt(page) - 1) * parseInt(limit) : undefined);
+
     res.status(200).json({
       data: {
         products,

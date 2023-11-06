@@ -22,7 +22,7 @@ const router = Router();
  *         name: order
  *         schema:
  *           type: string
- *         description: The field and direction to order by (format: field:direction)
+ *         description: "The field and direction to order by (format: field\\:direction)"
  *       - in: query
  *         name: limit
  *         schema:
