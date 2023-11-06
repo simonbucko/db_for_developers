@@ -1,6 +1,7 @@
 import { Router } from "express";
 import models from "../models/init-models.js";
 import { NotFoundError } from "../../common/NotFoundError.js";
+import { Op } from "sequelize";
 
 const router = Router();
 
@@ -31,7 +32,21 @@ const router = Router();
  */
 router.get("/products", async (req, res, next) => {
   try {
-    const products = await models.product.findAll();
+    const { name, order, limit, page } = req.query;
+
+    let orderClause = [];
+    if (order) {
+      const orderParams = order.split(":");
+      orderClause = [[orderParams[0], orderParams[1].toUpperCase()]];
+    }
+
+    const products = await models.product.findAll({
+      where: name ? { name: { [Op.like]: `%${name}%` } } : undefined,
+      order: orderClause.length ? orderClause : undefined,
+      limit: limit ? parseInt(limit) : undefined,
+      offset:
+        page && limit ? (parseInt(page) - 1) * parseInt(limit) : undefined,
+    });
 
     res.status(200).json({
       data: {
