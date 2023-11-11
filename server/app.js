@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import mysqlRouter from "./mysql/routes/mainRouter.js";
 import mongodbRouter from "./mongodb/routes/mainRouter.js";
+import neo4jRouter from "./neo4j/routes/mainRouter.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerJSDoc from "swagger-jsdoc";
 import { options } from "./swagger/swaggerConfig.js";
@@ -19,6 +20,7 @@ await mongoose.connect(process.env.MONGO_CONNECTION_STRING);
 
 app.use("/mysql", mysqlRouter);
 app.use("/mongodb", mongodbRouter);
+app.use("/neo4j", neo4jRouter);
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerJSDoc(options)));
 
