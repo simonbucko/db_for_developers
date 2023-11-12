@@ -32,4 +32,16 @@ export const Order = {
       },
     },
   },
+  payment: {
+    type: "relationship",
+    target: "Payment",
+    relationship: "PAID_FOR",
+    direction: "in",
+  },
+  customer: {
+    type: "relationship",
+    target: "Customer",
+    relationship: "PLACED",
+    direction: "in",
+  },
 };

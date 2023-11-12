@@ -4,12 +4,12 @@ import { NotFoundError } from "../../common/NotFoundError.js";
 
 const router = Router();
 
-router.get("/products", async (req, res, next) => {
+router.get("/orders", async (req, res, next) => {
   try {
-    const products = await neo4j.all("Product");
+    const orders = await neo4j.all("Order");
     res.status(200).json({
       data: {
-        products: products.map((product) => product.properties()),
+        orders: orders.map((product) => product.properties()),
       },
     });
   } catch (error) {
@@ -17,15 +17,23 @@ router.get("/products", async (req, res, next) => {
   }
 });
 
-router.post("/products", async (req, res, next) => {
+router.post("/orders", async (req, res, next) => {
   try {
-    const { name, description, quantityInStock, price } = req.body;
-    const product = await neo4j.create("Product", {
-      name,
-      description,
-      quantityInStock,
-      price,
-    });
+    const { customerId, products } = req.body;
+    const totalPrice = products
+      .reduce((accumulator, product) => {
+        return accumulator + product.price * product.quantity;
+      }, 0)
+      .toFixed(2);
+    const currentDate = new Date();
+
+    // TODO: finih this and the whole router after other entities are created
+    // create order
+    // create relationship between order and products and set quantity
+    // create a paymert and make relationship to customer
+    // create a relationship between customer and order
+    // deduct a quantity from product
+
     res.status(201).json({
       data: {
         product: product.properties(),
