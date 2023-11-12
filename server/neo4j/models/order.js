@@ -1,30 +1,30 @@
-export const Product = {
+export const Order = {
   id: {
     type: "uuid",
     primary: true,
     required: true,
   },
-  name: {
+  orderDate: {
+    type: "date",
+    required: true,
+  },
+  shippedDate: {
+    type: "date",
+    required: true,
+  },
+  comments: {
     type: "string",
-    required: true,
+    required: false,
   },
-  description: {
+  status: {
     type: "string",
-    required: true,
-  },
-  quantityInStock: {
-    type: "int",
-    required: true,
-  },
-  price: {
-    type: "float",
     required: true,
   },
   products: {
     type: "relationship",
     target: "Product",
     relationship: "CONTAINS",
-    direction: "in",
+    direction: "out",
     properties: {
       quantity: {
         type: "integer",
