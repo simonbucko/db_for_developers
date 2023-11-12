@@ -77,6 +77,9 @@ router.get("/orders", async (req, res, next) => {
  *         $ref: '#/components/responses/InternalServerError'
  */
 router.post("/orders", async (req, res, next) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  // TODO: test this transaction
   try {
     const { customerId, products } = req.body;
     const totalPrice = products
@@ -87,32 +90,47 @@ router.post("/orders", async (req, res, next) => {
     const customerObjectId = new mongoose.Types.ObjectId(customerId);
     const currentDate = new Date();
 
-    const order = await Order.create({
-      orderDate: currentDate,
-      customerId: customerObjectId,
-      products,
-      totalPrice,
-    });
+    const order = await Order.create(
+      [
+        {
+          orderDate: currentDate,
+          customerId: customerObjectId,
+          products,
+          totalPrice,
+        },
+      ],
+      { session }
+    );
 
     await Promise.all(
       products.map(async (product) => {
         await Product.findOneAndUpdate(
           { _id: product.id },
-          { $inc: { quantityInStock: -product.quantity } }
+          { $inc: { quantityInStock: -product.quantity } },
+          { session }
         );
       })
     );
 
-    const payment = await Payment.create({
-      paymentDate: currentDate,
-      amount: totalPrice,
-      orderId: order._id,
-    });
+    const payment = await Payment.create(
+      [
+        {
+          paymentDate: currentDate,
+          amount: totalPrice,
+          orderId: order._id,
+        },
+      ],
+      { session }
+    );
 
     await Customer.findOneAndUpdate(
       { _id: customerId },
-      { $push: { payments: payment._id, orders: order._id } }
+      { $push: { payments: payment._id, orders: order._id } },
+      { session }
     );
+
+    await session.commitTransaction();
+    session.endSession();
 
     res.status(200).json({
       data: {
@@ -120,6 +138,8 @@ router.post("/orders", async (req, res, next) => {
       },
     });
   } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
     next(error);
   }
 });
