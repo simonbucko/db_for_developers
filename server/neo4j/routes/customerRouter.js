@@ -44,7 +44,7 @@ router.post("/customers", async (req, res, next) => {
       street,
     });
 
-    await customer.relateTo(address, "HAS_ADDRESS"); // TODO: check if this works
+    await customer.relateTo(address, "address");
 
     res.status(201).json({
       data: {
