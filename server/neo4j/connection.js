@@ -1,6 +1,15 @@
 import Neode from "neode";
 import dotenv from "dotenv";
-import { Product, Employee, Job, Order } from "./models/index.js";
+import {
+  Product,
+  Employee,
+  Job,
+  Order,
+  Address,
+  Office,
+  Customer,
+  Payment,
+} from "./models/index.js";
 
 dotenv.config();
 
@@ -16,4 +25,8 @@ export default neode.with({
   Employee,
   Job,
   Order,
+  Address,
+  Office,
+  Customer,
+  Payment,
 });

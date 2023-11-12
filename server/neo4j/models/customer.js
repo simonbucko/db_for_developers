@@ -1,4 +1,4 @@
-export const Employee = {
+export const Customer = {
   id: {
     type: "uuid",
     primary: true,
@@ -16,22 +16,26 @@ export const Employee = {
     type: "string",
     required: true,
   },
-  job: {
+  phone: {
+    type: "string",
+    required: true,
+  },
+  orders: {
     type: "relationship",
-    target: "Job",
-    relationship: "HAS_JOB",
+    target: "Order",
+    relationship: "PLACED",
     direction: "out",
   },
   address: {
     type: "relationship",
     target: "Address",
-    relationship: "LIVES_AT",
+    relationship: "HAS_ADDRESS",
     direction: "out",
   },
-  office: {
+  payments: {
     type: "relationship",
-    target: "Office",
-    relationship: "WORKS_IN",
+    target: "Payment",
+    relationship: "PERFORM_PAYMENT",
     direction: "out",
   },
 };
