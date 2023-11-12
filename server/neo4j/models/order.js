@@ -10,7 +10,7 @@ export const Order = {
   },
   shippedDate: {
     type: "date",
-    required: true,
+    required: false,
   },
   comments: {
     type: "string",

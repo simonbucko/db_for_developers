@@ -8,7 +8,7 @@ export const Address = {
     type: "string",
     required: true,
   },
-  postCode: {
+  postalCode: {
     type: "string",
     required: true,
   },
