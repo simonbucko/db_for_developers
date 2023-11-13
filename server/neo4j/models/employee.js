@@ -21,17 +21,20 @@ export const Employee = {
     target: "Job",
     relationship: "HAS_JOB",
     direction: "out",
+    cascade: "detach",
   },
   address: {
     type: "relationship",
     target: "Address",
     relationship: "LIVES_AT",
     direction: "out",
+    cascade: "delete",
   },
   office: {
     type: "relationship",
     target: "Office",
     relationship: "WORKS_IN",
     direction: "out",
+    cascade: "detach",
   },
 };

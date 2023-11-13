@@ -74,8 +74,8 @@ router.get("/customers/:customerId", async (req, res, next) => {
     const customerJson = {
       ...customer.properties(),
       address: address._end.properties(),
-      orders: orders?.map((order) => order.properties()) || [],
-      payments: payments?.map((payment) => payment.properties()) || [],
+      orders: orders._values.map((order) => order._end.properties()),
+      payments: payments._values.map((payment) => payment._end.properties()),
     };
 
     res.status(200).json({

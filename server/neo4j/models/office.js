@@ -19,5 +19,6 @@ export const Office = {
     target: "Address",
     relationship: "IS_LOCATED_AT",
     direction: "out",
+    cascade: "delete",
   },
 };

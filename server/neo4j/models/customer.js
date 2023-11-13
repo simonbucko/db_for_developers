@@ -21,7 +21,7 @@ export const Customer = {
     required: true,
   },
   orders: {
-    type: "relationship",
+    type: "relationships",
     target: "Order",
     relationship: "PLACED",
     direction: "out",
@@ -37,7 +37,7 @@ export const Customer = {
     cascade: "delete",
   },
   payments: {
-    type: "relationship",
+    type: "relationships",
     target: "Payment",
     relationship: "PERFORM_PAYMENT",
     direction: "out",

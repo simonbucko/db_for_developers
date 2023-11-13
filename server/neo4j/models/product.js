@@ -21,7 +21,7 @@ export const Product = {
     required: true,
   },
   products: {
-    type: "relationship",
+    type: "relationships",
     target: "Product",
     relationship: "CONTAINS",
     direction: "in",

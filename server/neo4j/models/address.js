@@ -21,7 +21,7 @@ export const Address = {
     required: true,
   },
   employees: {
-    type: "relationship",
+    type: "relationships",
     target: "Employee",
     relationship: "LIIVES_AT",
     direction: "in",
@@ -32,7 +32,7 @@ export const Address = {
     relationship: "IS_LOCATED_AT",
     direction: "in",
   },
-  office: {
+  customer: {
     type: "relationship",
     target: "Customer",
     relationship: "HAS_ADDRESS",

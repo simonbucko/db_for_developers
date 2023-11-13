@@ -21,7 +21,7 @@ export const Order = {
     required: true,
   },
   products: {
-    type: "relationship",
+    type: "relationships",
     target: "Product",
     relationship: "CONTAINS",
     direction: "out",
@@ -31,17 +31,21 @@ export const Order = {
         required: true,
       },
     },
+    eager: true,
+    cascade: "detach",
   },
   payment: {
     type: "relationship",
     target: "Payment",
     relationship: "PAID_FOR",
     direction: "in",
+    eager: true,
   },
   customer: {
     type: "relationship",
     target: "Customer",
     relationship: "PLACED",
     direction: "in",
+    eager: true,
   },
 };

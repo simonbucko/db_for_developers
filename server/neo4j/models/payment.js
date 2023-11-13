@@ -10,7 +10,6 @@ export const Payment = {
   },
   amount: {
     type: "float",
-    precistion: 2,
     required: false,
   },
   order: {
@@ -18,6 +17,7 @@ export const Payment = {
     target: "Order",
     relationship: "PAID_FOR",
     direction: "out",
+    cascade: "detach",
   },
   customer: {
     type: "relationship",
