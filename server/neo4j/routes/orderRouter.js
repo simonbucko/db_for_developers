@@ -93,11 +93,6 @@ router.post("/orders", async (req, res, next) => {
         { paymentDate: currentDate, amount: totalPrice }
       );
 
-      const customer = await transaction.run(
-        `MATCH (c:Customer {id: $id}) RETURN c`,
-        { id: customerId }
-      );
-
       await transaction.run(
         `MATCH (c:Customer), (p:Payment) 
          WHERE c.id = $customerId AND p.id = $paymentId 

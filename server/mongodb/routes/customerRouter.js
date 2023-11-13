@@ -253,10 +253,10 @@ router.patch("/customers/:customerId", async (req, res, next) => {
 
     const updatedCustomer = {
       ...savedCustomer,
-      firstName,
-      lastName,
-      phone,
-      email,
+      firstName: firstName || savedCustomer.firstName,
+      lastName: lastName || savedCustomer.lastName,
+      phone: phone || savedCustomer.phone,
+      email: email || savedCustomer.email,
       address: {
         state: state || savedCustomer.address.state,
         postalCode: postalCode || savedCustomer.address.postalCode,

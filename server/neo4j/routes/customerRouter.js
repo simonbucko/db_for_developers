@@ -48,6 +48,57 @@ router.post("/customers", async (req, res, next) => {
 
     res.status(201).json({
       data: {
+        customer: {
+          ...customer.properties(),
+          address: address.properties(),
+        },
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/customers/:customerId", async (req, res, next) => {
+  try {
+    const customer = await neo4j.find("Customer", req.params.customerId);
+
+    if (!customer) {
+      throw new NotFoundError();
+    }
+
+    const address = await customer.get("address");
+    const orders = await customer.get("orders");
+    const payments = await customer.get("payments");
+
+    const customerJson = {
+      ...customer.properties(),
+      address: address._end.properties(),
+      orders: orders?.map((order) => order.properties()) || [],
+      payments: payments?.map((payment) => payment.properties()) || [],
+    };
+
+    res.status(200).json({
+      data: {
+        customer: customerJson,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.delete("/customers/:customerId", async (req, res, next) => {
+  try {
+    const customer = await neo4j.find("Customer", req.params.customerId);
+    if (!customer) {
+      throw new NotFoundError();
+    }
+
+    await customer.delete();
+
+    res.status(200).json({
+      data: {
         customer: customer.properties(),
       },
     });
@@ -56,59 +107,54 @@ router.post("/customers", async (req, res, next) => {
   }
 });
 
-router.get("/products/:productId", async (req, res, next) => {
+router.patch("/customers/:customerId", async (req, res, next) => {
   try {
-    const product = await neo4j.find("Product", req.params.productId);
-    if (!product) {
+    const {
+      firstName,
+      lastName,
+      phone,
+      email,
+      state,
+      postalCode,
+      city,
+      street,
+    } = req.body;
+    const customerToUpdate = await neo4j.find(
+      "Customer",
+      req.params.customerId
+    );
+
+    if (!customerToUpdate) {
       throw new NotFoundError();
     }
-    res.status(200).json({
-      data: {
-        product: product.properties(),
-      },
-    });
-  } catch (error) {
-    next(error);
-  }
-});
 
-router.delete("/products/:productId", async (req, res, next) => {
-  try {
-    const product = await neo4j.find("Product", req.params.productId);
-    if (!product) {
-      throw new NotFoundError();
-    }
+    const addressToUpdate = await customerToUpdate.get("address");
 
-    await product.delete();
-
-    res.status(200).json({
-      data: {
-        product: product.properties(),
-      },
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-
-router.patch("/products/:productId", async (req, res, next) => {
-  try {
-    const { name, description, quantityInStock, price } = req.body;
-    const productToUpdate = await neo4j.find("Product", req.params.productId);
-
-    const updatedProduct = {
-      ...productToUpdate.properties(),
-      name,
-      description,
-      quantityInStock,
-      price,
+    const updatedCustomer = {
+      ...customerToUpdate.properties(),
+      firstName: firstName || customerToUpdate.properties().firstName,
+      lastName: lastName || customerToUpdate.properties().lastName,
+      phone: phone || customerToUpdate.properties().phone,
+      email: email || customerToUpdate.properties().email,
     };
 
-    const product = await productToUpdate.update(updatedProduct);
+    const updatedAddress = {
+      ...addressToUpdate._end.properties(),
+      state: state || addressToUpdate._end.properties().state,
+      postalCode: postalCode || addressToUpdate._end.properties().postalCode,
+      city: city || addressToUpdate._end.properties().city,
+      street: street || addressToUpdate._end.properties().street,
+    };
+
+    const customer = await customerToUpdate.update(updatedCustomer);
+    const address = await addressToUpdate._end.update(updatedAddress);
 
     res.status(200).json({
       data: {
-        product: product.properties(),
+        customer: {
+          ...customer.properties(),
+          address: address.properties(),
+        },
       },
     });
   } catch (error) {

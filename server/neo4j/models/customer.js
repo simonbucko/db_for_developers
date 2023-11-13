@@ -25,17 +25,23 @@ export const Customer = {
     target: "Order",
     relationship: "PLACED",
     direction: "out",
+    eager: true,
+    cascade: "detach",
   },
   address: {
     type: "relationship",
     target: "Address",
     relationship: "HAS_ADDRESS",
     direction: "out",
+    eager: true,
+    cascade: "delete",
   },
   payments: {
     type: "relationship",
     target: "Payment",
     relationship: "PERFORM_PAYMENT",
     direction: "out",
+    eager: true,
+    cascade: "detach",
   },
 };

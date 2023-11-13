@@ -79,7 +79,6 @@ router.get("/orders", async (req, res, next) => {
 router.post("/orders", async (req, res, next) => {
   const session = await mongoose.startSession();
   session.startTransaction();
-  // TODO: test this transaction
   try {
     const { customerId, products } = req.body;
     const totalPrice = products
