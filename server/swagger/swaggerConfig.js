@@ -16,6 +16,8 @@ import {
   MysqlProductInput,
   Neo4jProduct,
   Neo4jProductInput,
+  Neo4jOrder,
+  Neo4jOrderInput,
 } from "./schemas/index.js";
 
 const swaggerDefinition = {
@@ -48,6 +50,8 @@ const swaggerDefinition = {
       MysqlCustomerAddressUpdate,
       Neo4jProduct,
       Neo4jProductInput,
+      Neo4jOrder,
+      Neo4jOrderInput,
     },
   },
 };

@@ -4,6 +4,31 @@ import { NotFoundError } from "../../common/NotFoundError.js";
 
 const router = Router();
 
+/**
+ * @swagger
+ * /neo4j/orders:
+ *   get:
+ *     tags:
+ *       [Neo4j - Orders]
+ *     summary: Get a orders list
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     orders:
+ *                      type: array
+ *                      items:
+ *                        $ref: '#/components/schemas/Neo4jOrder'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.get("/orders", async (req, res, next) => {
   try {
     const orders = await neo4j.all("Order");
@@ -17,6 +42,37 @@ router.get("/orders", async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /neo4j/orders:
+ *   post:
+ *     tags:
+ *       [Neo4j - Orders]
+ *     summary: Create an order
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Neo4jOrderInput'
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     orders:
+ *                      type: array
+ *                      items:
+ *                        $ref: '#/components/schemas/Neo4jOrder'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.post("/orders", async (req, res, next) => {
   try {
     const { customerId, products } = req.body;
@@ -67,6 +123,38 @@ router.post("/orders", async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /neo4j/orders/{orderId}:
+ *   get:
+ *     tags:
+ *       [Neo4j - Orders]
+ *     summary: Get an order
+ *     parameters:
+ *       - name: orderId
+ *         in: path
+ *         description: ID of the order to get
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     product:
+ *                       $ref: '#/components/schemas/MongodbOrder'
+ *       '404':
+ *         $ref: '#/components/responses/NotFound'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.get("/orders/:orderId", async (req, res, next) => {
   try {
     const order = await neo4j.find("Order", req.params.orderId);
