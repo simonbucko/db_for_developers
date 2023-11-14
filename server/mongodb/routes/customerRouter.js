@@ -204,7 +204,7 @@ router.delete("/customers/:customerId", async (req, res, next) => {
  *   patch:
  *     tags:
  *       [Mongodb - Customers]
- *     summary: Create a customer
+ *     summary: Update a customer
  *     parameters:
  *       - name: customerId
  *         in: path

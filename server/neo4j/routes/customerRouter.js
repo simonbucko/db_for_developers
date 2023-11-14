@@ -4,6 +4,31 @@ import { NotFoundError } from "../../common/NotFoundError.js";
 
 const router = Router();
 
+/**
+ * @swagger
+ * /neo4j/customers:
+ *   get:
+ *     tags:
+ *       [Neo4j - Customers]
+ *     summary: Get a customers list
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     customers:
+ *                      type: array
+ *                      items:
+ *                        $ref: '#/components/schemas/Neo4jCustomer'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.get("/customers", async (req, res, next) => {
   try {
     const customers = await neo4j.all("Customer");
@@ -17,6 +42,35 @@ router.get("/customers", async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /neo4j/customers:
+ *   post:
+ *     tags:
+ *       [Neo4j - Customers]
+ *     summary: Create a customer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Neo4jCustomerInput'
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     customer:
+ *                       $ref: '#/components/schemas/Neo4jCustomer'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.post("/customers", async (req, res, next) => {
   try {
     const {
@@ -59,6 +113,38 @@ router.post("/customers", async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /neo4j/customers/{customerId}:
+ *   get:
+ *     tags:
+ *       [Neo4j - Customers]
+ *     summary: Get a customer by ID
+ *     parameters:
+ *       - name: customerId
+ *         in: path
+ *         description: ID of the customer to get
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     customer:
+ *                       $ref: '#/components/schemas/Neo4jCustomer'
+ *       '404':
+ *         $ref: '#/components/responses/NotFound'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.get("/customers/:customerId", async (req, res, next) => {
   try {
     const customer = await neo4j.find("Customer", req.params.customerId);
@@ -88,6 +174,38 @@ router.get("/customers/:customerId", async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /neo4j/customers/{customerId}:
+ *   delete:
+ *     tags:
+ *       [Neo4j - Customers]
+ *     summary: Delete a customer by ID
+ *     parameters:
+ *       - name: customerId
+ *         in: path
+ *         description: ID of the customer to delete
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     customer:
+ *                       $ref: '#/components/schemas/Neo4jCustomer'
+ *       '404':
+ *         $ref: '#/components/responses/NotFound'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.delete("/customers/:customerId", async (req, res, next) => {
   try {
     const customer = await neo4j.find("Customer", req.params.customerId);
@@ -107,6 +225,44 @@ router.delete("/customers/:customerId", async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /neo4j/customers/{customerId}:
+ *   patch:
+ *     tags:
+ *       [Neo4j - Customers]
+ *     summary: Update a customer
+ *     parameters:
+ *       - name: customerId
+ *         in: path
+ *         description: ID of the customer to udpate
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Neo4jCustomerInput'
+ *     responses:
+ *       '200':
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     customer:
+ *                       $ref: '#/components/schemas/Neo4jCustomer'
+ *       '404':
+ *         $ref: '#/components/responses/NotFound'
+ *       '500':
+ *         $ref: '#/components/responses/InternalServerError'
+ */
 router.patch("/customers/:customerId", async (req, res, next) => {
   try {
     const {

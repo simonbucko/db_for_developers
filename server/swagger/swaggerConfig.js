@@ -18,6 +18,8 @@ import {
   Neo4jProductInput,
   Neo4jOrder,
   Neo4jOrderInput,
+  Neo4jCustomer,
+  Neo4jCustomerInput,
 } from "./schemas/index.js";
 
 const swaggerDefinition = {
@@ -52,6 +54,8 @@ const swaggerDefinition = {
       Neo4jProductInput,
       Neo4jOrder,
       Neo4jOrderInput,
+      Neo4jCustomer,
+      Neo4jCustomerInput,
     },
   },
 };
