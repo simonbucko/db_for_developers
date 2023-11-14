@@ -5,3 +5,4 @@ export * from "./mysql/customer.js";
 export * from "./mysql/order.js";
 export * from "./mysql/product.js";
 export * from "./mysql/bigCustomer.js";
+export * from "./neo4j/product.js";
