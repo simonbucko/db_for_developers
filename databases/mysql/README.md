@@ -110,3 +110,12 @@ Isolations levels(like solutions to the violations)
   - provides protection against dirty reads, lost updates and non repeatable reads but no protection against phantoms
 - Serializable
   - provides a protection agains all the above mentioned problems but it can be slow as translations are running in a sequence
+
+Indexes
+
+- clustered indexes
+  - leaf nodes actually holds the data
+    unclustered indexes
+  - leaf nodes does not hold the actual data, but it holds the reference to the actual data
+
+Use `explain` to see how a DB perform a query and how many row it needed to search
