@@ -197,6 +197,7 @@ DROP TABLE IF EXISTS `log`;
 CREATE TABLE `log` (
   `id` int NOT NULL AUTO_INCREMENT,
   `log` varchar(445) DEFAULT NULL,
+  `isRead` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -399,14 +400,15 @@ DROP TABLE IF EXISTS `product`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `product` (
-  `id` char(36) NOT NULL DEFAULT (uuid()),
-  `name` varchar(70) NOT NULL,
-  `description` text NOT NULL,
+  `id` char(36) CHARACTER SET utf16 NOT NULL DEFAULT (uuid()),
+  `name` varchar(70) CHARACTER SET utf16 NOT NULL,
+  `description` text CHARACTER SET utf16 NOT NULL,
   `quantityInStock` smallint unsigned NOT NULL,
   `price` decimal(10,2) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf16;
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `idx_product_price` (`price`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -415,7 +417,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES ('5472c2ab-8cc1-4047-a316-dccab0ef2319','Helicoptera','Best apache ever',50,159.99),('582a7180-6165-11ee-9667-7c1e520063bc','Nike AIR','This are brand new shoes',96,100.34);
+INSERT INTO `product` VALUES ('1c2ce913-95ea-40f3-a049-ddd812d0f7a3','Apple','Best apple ever',50,19.99),('5472c2ab-8cc1-4047-a316-dccab0ef2319','Helicoptera','Best apache ever',50,159.99),('582a7180-6165-11ee-9667-7c1e520063bc','Nike AIR','This are brand new shoes',96,100.34),('584020d2-b88a-4147-ba4d-25edd7005960','Keyboard','Best keyboard ever',500,194.99),('8dd0017b-de90-40ba-becd-983bf474de8c','Table','Best table ever',40,14.56);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -553,4 +555,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-10-31 20:03:13
+-- Dump completed on 2023-11-19 19:21:29
