@@ -6,6 +6,12 @@ mysql -h mysql-sibu.mysql.database.azure.com -u sibu -p
 
 - heslo je skratena verzia s velkymi pismenami a ziadnym special znakom medzi cislom
 
+```
+mysqlpump -usibu -p -hmysql-sibu.mysql.database.azure.com --exclude-databases=% --users > users.sql
+```
+
+- this will create a script for all users and their privileges
+
 use `show grants;` to display what grants a user has
 
 transactions

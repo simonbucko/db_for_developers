@@ -1,0 +1,64 @@
+[{
+  "_id": {
+    "$oid": "65355aa1cadff8af80ac7de5"
+  },
+  "firstName": "Simona",
+  "lastName": "Testa",
+  "email": "simon@test.sk",
+  "phone": "23232323",
+  "address": {
+    "state": "Slovakia",
+    "postalCode": "3434",
+    "city": "Kosice",
+    "street": "Busy 5",
+    "_id": {
+      "$oid": "65356144f0fa57839bb7c02a"
+    }
+  },
+  "payments": [
+    {
+      "$oid": "653802a1e09bdf1b8dee2f42"
+    }
+  ],
+  "orders": [
+    {
+      "$oid": "65380299e09bdf1b8dee2f3e"
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "653803815689bc1cc971a297"
+  },
+  "firstName": "Muhamed",
+  "lastName": "Blik",
+  "email": "simon@test.sk",
+  "phone": "23232323",
+  "address": {
+    "state": "Slovakia",
+    "postalCode": "3434",
+    "city": "Kosice",
+    "street": "Busy 5",
+    "_id": {
+      "$oid": "653803815689bc1cc971a298"
+    }
+  },
+  "payments": [
+    {
+      "$oid": "653803a25689bc1cc971a29e"
+    },
+    {
+      "$oid": "653809cddfb20b9bfbf2cef1"
+    }
+  ],
+  "orders": [
+    {
+      "$oid": "653803a25689bc1cc971a29a"
+    },
+    {
+      "$oid": "653809ccdfb20b9bfbf2ceeb"
+    }
+  ],
+  "__v": 0
+}]
