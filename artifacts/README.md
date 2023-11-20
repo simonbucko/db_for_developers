@@ -1,6 +1,6 @@
 # Getting started:
 
-1. Clone the repo
+1. Clone the repo https://github.com/simonbucko/db_for_developers
 1. Run `npm i` in the `/server` folder
 1. Create a mysql database and run the `eshop-db.sql` script on it to create the database
 1. Run the `users.sql` script on the MySQL database as well after creating database
