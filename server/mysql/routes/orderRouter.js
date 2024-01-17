@@ -106,7 +106,6 @@ router.post("/orders", async (req, res, next) => {
         productQuantities.join(","),
         totalPrice,
       ],
-      type: _sequelize.QueryTypes.SELECT,
     });
 
     res.status(200).json({

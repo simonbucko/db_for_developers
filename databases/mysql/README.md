@@ -79,7 +79,7 @@ advantages and disadvantages of using stored procedures
 partition
 
 - dividing large dataset into a smaller pieces so it is easier to query the data.
-- vertical paritioning is when we break down the table into a smaller tables
+- vertical paritioning is when we break down the table into a smaller tables so they have same amount of rows but each table has only some columns
 - horizontal partitioning is when we copy the schema and split the data based on some sharding key and usually is done between multiple servers or nodes
 
 normalization forms
@@ -121,7 +121,7 @@ Indexes
 
 - clustered indexes
   - leaf nodes actually holds the data
-    unclustered indexes
+- unclustered indexes
   - leaf nodes does not hold the actual data, but it holds the reference to the actual data
 
 Use `explain` to see how a DB perform a query and how many row it needed to search
